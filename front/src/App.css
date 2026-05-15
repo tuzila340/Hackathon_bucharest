@@ -1,0 +1,210 @@
+html, body, #root {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  display: flex;
+  width: 100%;
+}
+
+body {
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-color: #cfe7d2;
+}
+
+.main-header {
+  position: fixed;
+  width: 100%;
+  background-color: #6db38a;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 1000;
+}
+
+.header-menubar {
+  border: none !important;
+  border-bottom: none !important;
+  box-shadow: none !important;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0 24px;
+  background: transparent !important;
+}
+
+.header-content {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header-actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+.navbar-h1{
+  font-size: 1.7rem;
+  color: #fff;
+  margin: 0;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out; 
+}
+
+.navbar-h1:hover {
+  transform: translateY(-2px);
+}
+
+.navbar-h1:active {
+  transform: translateY(0);
+}
+
+.btn-group{
+  display: flex;
+  gap: 8px;
+}
+
+.main-content{
+    position: absolute;
+    top: 100px;
+    left: 50px;
+    width: calc(100% - 100px);
+    height: calc(100% - 150px);
+    backdrop-filter: blur(12px);
+    background-color: #a9d3b4;
+    border-radius: 20px;
+}
+
+button {
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.5em 1.2em;
+  font-size: 0.95em;
+  font-weight: 500;
+  font-family: inherit;
+  color: rgba(255, 255, 255, 0.85);
+  cursor: pointer;
+  transition: all 0.3s ease-in-out; 
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  white-space: nowrap;
+}
+
+button:hover {
+  transform: translateY(-2px);
+}
+
+button:active {
+  transform: translateY(0);
+}
+
+p {
+  margin:0;
+}
+
+[role="dialog"] {
+  border: none !important;
+  width: 100%;
+  max-width: 400px;
+  background-color: rgba(18, 18, 18, 0.8) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  border-radius: 20px !important; 
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  
+  box-shadow: 
+    0 10px 25px -5px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(168, 85, 247, 0.15) !important; 
+    
+  color: rgba(255, 255, 255, 0.9) !important;
+  padding: 28px !important;
+  
+  position: fixed;
+
+  z-index: 2000;
+}
+
+[role="dialog"] h2 {
+  color: #fff;
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  margin-bottom: 8px;
+}
+
+[role="dialog"] b {
+  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.7rem;
+  line-height: 0.5;
+  margin-bottom: 10px;
+}
+
+[role="dialog"] input {
+  width: 95%;
+  flex: 1;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+  margin: 5px 0 6px 0;
+  
+}
+
+[role="dialog"] input:focus {
+  background-color: rgba(255, 255, 255, 0.08) !important;
+  border-color: #2d5a43 !important;
+  box-shadow: 0 0 0 4px #6db38a !important;
+  outline: none !important;
+}
+
+[role="dialog"] label {
+  display: block;
+  margin-bottom: 2px;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+[data-state="open"] + [data-overlay], 
+.DialogOverlay {
+  background-color: rgba(0, 0, 0, 0.4) !important;
+  backdrop-filter: blur(8px) !important;
+  animation: overlayShow 150ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[role="dialog"] button:has(svg), 
+[role="dialog"] [data-radix-collection-item],
+.DialogClose {
+  background-color: transparent !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+
+  position: absolute !important;
+  top: 16px !important;
+  right: 16px !important;
+  
+  color: rgba(255, 255, 255, 0.5) !important;
+  cursor: pointer;
+  transition: color 0.2s ease;
+  padding: 4px !important;
+}
+
+[role="dialog"] button:has(svg):hover {
+  color: #fff !important;
+  background-color: rgba(255, 255, 255, 0.1) !important;
+  border-radius: 6px;
+}
+
+[role="dialog"] select{
+  width: 95%;
+  padding: 8px 12px;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background-color: rgba(255, 255, 255, 0.07);
+  color: rgba(255, 255, 255, 0.85);
+}
