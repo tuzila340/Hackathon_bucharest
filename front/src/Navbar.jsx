@@ -14,7 +14,7 @@ function Navbar({ onNavigate, activePage }) {
 
             <div className="btn-group">
               <button onClick={() => onNavigate('home')} className="btn" >Home</button>
-              <button onClick={() => onNavigate('seekers')} className="btn">Seekers</button>
+              <button onClick={() => onNavigate('seekers')} className="btn">Add seeker</button>
               <LogInDialog></LogInDialog>
             </div>
           </MenubarMenu>
