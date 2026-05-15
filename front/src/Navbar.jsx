@@ -1,8 +1,9 @@
 import React from "react";
 import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import LogInDialog from "./LogInDialog";
+import AddSeekerDialog from "./AddSeekerDialog";
 
-function Navbar({ onNavigate, activePage }) {
+function Navbar({ onNavigate }) {
   return (
     <div className="app-wrapper">
       <header className="main-header">
@@ -14,7 +15,7 @@ function Navbar({ onNavigate, activePage }) {
 
             <div className="btn-group">
               <button onClick={() => onNavigate('home')} className="btn" >Home</button>
-              <button onClick={() => onNavigate('seekers')} className="btn">Add seeker</button>
+              <AddSeekerDialog></AddSeekerDialog>
               <LogInDialog></LogInDialog>
             </div>
           </MenubarMenu>

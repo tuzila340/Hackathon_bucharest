@@ -9,8 +9,6 @@ function App() {
   const handlePageChange = () => {
     switch (activePage) {
       case 'home':
-        return <div>Home Page</div>
-      case 'seekers':
         return <SeekerList />
     }
   }
@@ -27,3 +25,5 @@ function App() {
 }
 
 export default App
+
+//home page
