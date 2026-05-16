@@ -18,13 +18,17 @@ from rest_framework import generics, permissions
 from django.utils.decorators import method_decorator
 from django.views.decorators.csrf import csrf_exempt
 
+from rest_framework.renderers import JSONRenderer
+
 
 @method_decorator(csrf_exempt, name='dispatch')
 class HelpRequestListAPI(generics.ListCreateAPIView):
     queryset = HelpRequest.objects.filter(status='open').order_by('-created_at')
     serializer_class = HelpRequestSerializer
+    renderer_classes = [JSONRenderer]
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+
     def perform_create(self, serializer):
         if self.request.user.is_authenticated:
             serializer.save(seeker=self.request.user)

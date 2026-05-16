@@ -1,15 +1,17 @@
 from django.urls import path
 from rest_framework.authtoken import views as auth_views
 from . import views
-
+from .views import HelpRequestListAPI,HelpRequestDetailAPI
 
 
 
 
 urlpatterns = [
     # запити
-    path('api/requests/', views.HelpRequestListAPI.as_view(), name='api_list'),
-    path('api/requests/<int:pk>/', views.HelpRequestDetailAPI.as_view(), name='api_detail'),
+    #path('api/requests/', views.HelpRequestListAPI.as_view(), name='api_list'),
+    #path('api/requests/<int:pk>/', views.HelpRequestDetailAPI.as_view(), name='api_detail'),
+    path('api/requests/', HelpRequestListAPI.as_view(), name='request-list'),
+    path('api/requests/<int:pk>/', HelpRequestDetailAPI.as_view(), name='request-detail'),
 
     # користувачі
     path('api/register/', views.RegisterView.as_view(), name='api_register'),

@@ -10,7 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('myapp.urls')),
 
-    # Пряме "підключення" папки assets для Mac
+
     re_path(r'^assets/(?P<path>.*)$', serve, {
         'document_root': os.path.join(settings.BASE_DIR, 'dist', 'assets'),
     }),
