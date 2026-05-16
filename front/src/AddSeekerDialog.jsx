@@ -85,7 +85,7 @@ function AddSeekerDialog({ onAddSeeker }) {
             Please fill in the details to add a new seeker.
           </DialogDescription>
         </DialogHeader>
-
+        <form onSubmit={handleSubmit(AddSeeker)} className="flex flex-col gap-3">
         <div className="flex flex-col gap-3">
           <div>
             <Label htmlFor="title">Title</Label>
@@ -151,11 +151,14 @@ function AddSeekerDialog({ onAddSeeker }) {
           </div>
         </div>
 
+        </form>
+
         <DialogFooter>
           <Button variant="outline" onClick={() => setOpen(false)}>
             Cancel
           </Button>
-          <Button onClick={handleSubmit(AddSeeker)}>Submit</Button>
+          
+          <Button type="submit">Submit</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
