@@ -25,12 +25,14 @@ const schema = yup.object().shape({
   location: yup.string(),
   urgency: yup
     .string()
-    .oneOf(["ok", "no data"], "Status must be 'ok' or 'no data'"),
+    .oneOf(["low", "medium", "high", "critical"], "Status must be 'ok' or 'no data'"),
 });
 
 const urgencyOptions = [
-  { value: "ok", label: "OK" },
-  { value: "no data", label: "No data" },
+  { value: "low", label: "low" },
+  { value: "medium", label: "medium" },
+  { value: "high", label: "high" },
+  { value: "critical", label: "critical" },
 ];
 
 function AddSeekerDialog({ onAddSeeker }) {
