@@ -2,6 +2,7 @@ import React from "react";
 import { Menubar, MenubarMenu } from "@/components/ui/menubar";
 import LogInDialog from "./LogInDialog";
 import AddSeekerDialog from "./AddSeekerDialog";
+import RegistrationDialog from "./RegistrationDialog";
 
 function Navbar({ onNavigate }) {
   return (
@@ -17,6 +18,7 @@ function Navbar({ onNavigate }) {
               <button onClick={() => onNavigate('home')} className="btn" >Home</button>
               <AddSeekerDialog></AddSeekerDialog>
               <LogInDialog></LogInDialog>
+              <RegistrationDialog></RegistrationDialog>
             </div>
           </MenubarMenu>
         </Menubar>

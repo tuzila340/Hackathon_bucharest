@@ -84,29 +84,6 @@ function LogInDialog({ onLogin }) {
             )}
           </div>
 
-          <div>
-            <Label htmlFor="firstname">Firstname</Label>
-            <Input
-              id="firstname"
-              placeholder="Firstname"
-              {...register("firstname")}
-            />
-            {errors.firstname && (
-              <b style={{ color: "red" }}>{errors.firstname.message}</b>
-            )}
-          </div>
-
-          <div>
-            <Label htmlFor="secondname">Secondname</Label>
-            <Input
-              id="secondname"
-              placeholder="Secondname"
-              {...register("secondname")}
-            />
-            {errors.secondname && (
-              <b style={{ color: "red" }}>{errors.secondname.message}</b>
-            )}
-          </div>
 
           <div>
             <Label htmlFor="password">Password</Label>
@@ -118,15 +95,6 @@ function LogInDialog({ onLogin }) {
             />
             {errors.password && (
               <b style={{ color: "red" }}>{errors.password.message}</b>
-            )}
-          </div>
-
-
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input id="city" placeholder="City" {...register("city")} />
-            {errors.city && (
-              <b style={{ color: "red" }}>{errors.city.message}</b>
             )}
           </div>
         </div>
