@@ -51,15 +51,15 @@ function AddSeekerDialog({ onAddSeeker }) {
   const AddSeeker = async (data) => {
     try {
       const token = localStorage.getItem('token'); 
-
+  
       await axios.post("http://127.0.0.1:8000/api/requests/", data, {
         headers: {
-          'Authorization': "Token ${token}"
+          'Authorization': `Token ${token}`
         }
       });
-
+  
       console.log("Seeker added!");
-      setIsAdding(true);
+      reset();
       if (onAddSeeker) onAddSeeker();
       setOpen(false);
       window.location.reload();

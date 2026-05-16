@@ -7,6 +7,7 @@ import TableRow from "@mui/material/TableRow"
 import Paper from "@mui/material/Paper"
 import { useState, useEffect } from "react"
 import styles from "./Table.module.css"
+import axios from "axios"
 
 function SeekerList() {
     const [seekers, setSeekers] = useState([])
@@ -14,7 +15,7 @@ function SeekerList() {
     useEffect(() => {
         const getSeekerList = async () => {
           await axios.get("http://127.0.0.1:8000/api/requests/", {
-            headers: { 'Authorization': `Token ${localStorage.getItem('token')}` }
+            headers: { 'Authorization': `Token ${token}` }
           })
             console.log(response)
         }
