@@ -30,10 +30,10 @@ import {
   
     const LogIn = async (data) => {
         try {
-            await axios.post("http://localhost:5158/register", data);
+            await axios.post("/api/register/", data);
               console.log("Registered!");
       
-              await axios.post("http://localhost:5158/login", {
+              await axios.post("/api/login/", {
                   username: data.username,
                   password: data.password
               }, { withCredentials: true });
