@@ -1,70 +1,69 @@
-import { tokenStore } from "@/utils/TokenStore"
+import { tokenStore } from "../tokens/tokenStore"
 
 class HttpClient {
-    baseURL = "https://backend-production-5f49d.up.railway.app/api/"
-    // private baseURL = "http://10.0.2.2:8000/api/" // localhost
-
-    isRefreshing = false
-    pendingRequests = []
+    constructor() {
+        this.baseURL = "http://127.0.0.1:8000/api/"
+        this.isRefreshing = false
+        this.pendingRequests = []
+    }
 
     // =========================
     // PUBLIC API
     // =========================
     get(endpoint) {
-        return this.requestWithAuth < T > (endpoint, { method: "GET" })
+        return this.requestWithAuth(endpoint, { method: "GET" })
     }
 
     post(endpoint, body) {
-        return this.requestWithAuth < T > (endpoint, { method: "POST", body })
+        return this.requestWithAuth(endpoint, { method: "POST", body })
     }
 
     patch(endpoint, body) {
-        return this.requestWithAuth < T > (endpoint, { method: "PATCH", body })
+        return this.requestWithAuth(endpoint, { method: "PATCH", body })
     }
 
     delete(endpoint) {
-        return this.requestWithAuth < T > (endpoint, { method: "DELETE" })
+        return this.requestWithAuth(endpoint, { method: "DELETE" })
     }
 
-    publicRequest(endpoint, options) {
-        return this.request < T > (endpoint, options)
+    publicRequest(endpoint, options = {}) {
+        return this.request(endpoint, options)
     }
 
     // =========================
     // CORE
     // =========================
-    async requestWithAuth(endpoint, options) {
+    async requestWithAuth(endpoint, options = {}) {
         const accessToken = tokenStore.getAccess()
 
         const response = await this.requestRaw(endpoint, {
             ...options,
             headers: {
-                ...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-                ...options.headers,
+                ...(accessToken ? { Authorization: `Token ${accessToken}` } : {}),
+                ...(options.headers || {}),
             },
         })
 
         if (response.ok) {
-            return this.parseResponse < T > response
+            return this.parseResponse(response)
         }
 
         if (response.status !== 401 && response.status !== 403) {
             throw await this.buildError(response)
         }
 
-        // ===== REFRESH FLOW =====
+        // =========================
+        // REFRESH FLOW
+        // =========================
+
         if (this.isRefreshing) {
-            return (
-                new Promise() <
-                T >
-                ((resolve, reject) => {
-                    this.pendingRequests.push({
-                        execute: () => this.requestWithAuth < T > (endpoint, options),
-                        resolve,
-                        reject,
-                    })
+            return new Promise((resolve, reject) => {
+                this.pendingRequests.push({
+                    execute: () => this.requestWithAuth(endpoint, options),
+                    resolve,
+                    reject,
                 })
-            )
+            })
         }
 
         this.isRefreshing = true
@@ -77,7 +76,9 @@ class HttpClient {
             const queue = this.pendingRequests
             this.pendingRequests = []
 
-            queue.forEach((req) => req.execute().then(req.resolve).catch(req.reject))
+            queue.forEach((req) => {
+                req.execute().then(req.resolve).catch(req.reject)
+            })
 
             return data
         } catch (error) {
@@ -85,32 +86,31 @@ class HttpClient {
             this.pendingRequests = []
 
             queue.forEach((req) => req.reject(error))
-
             throw error
         } finally {
             this.isRefreshing = false
         }
     }
 
-    async request(endpoint, options) {
+    async request(endpoint, options = {}) {
         const response = await this.requestRaw(endpoint, options)
 
         if (!response.ok) {
             throw await this.buildError(response)
         }
 
-        return this.parseResponse < T > response
+        return this.parseResponse(response)
     }
 
-    async requestRaw(endpoint, options) {
+    async requestRaw(endpoint, options = {}) {
         const url = this.baseURL + endpoint
 
         return fetch(url, {
-            method: options.method ?? "GET",
+            method: options.method || "GET",
             headers: {
                 "Content-Type": "application/json",
                 Accept: "application/json",
-                ...options.headers,
+                ...(options.headers || {}),
             },
             body: options.body ? JSON.stringify(options.body) : undefined,
         })
@@ -120,7 +120,7 @@ class HttpClient {
     // REFRESH
     // =========================
     async refreshAccess() {
-        const refreshToken = await tokenStore.getRefresh()
+        const refreshToken = tokenStore.getRefresh()
 
         if (!refreshToken) {
             throw new Error("NO_REFRESH_TOKEN")
@@ -153,7 +153,9 @@ class HttpClient {
         const queue = this.pendingRequests
         this.pendingRequests = []
 
-        queue.forEach((req) => req.reject(new Error("LOGOUT")))
+        queue.forEach((req) => {
+            req.reject(new Error("LOGOUT"))
+        })
     }
 
     // =========================
@@ -166,18 +168,15 @@ class HttpClient {
 
         const contentType = response.headers.get("content-type")
 
-        if (contentType?.includes("application/json")) {
-            return await response.json()
+        if (contentType && contentType.includes("application/json")) {
+            return response.json()
         }
 
-        const text = await response.text()
-        return text
+        return response.text()
     }
 
     async buildError(response) {
         const rawText = await response.text()
-
-        let message = `HTTP ${response.status}`
 
         if (rawText.startsWith("<!DOCTYPE html") || rawText.startsWith("<html")) {
             return new Error("Endpoint not found")
@@ -185,12 +184,10 @@ class HttpClient {
 
         try {
             const json = JSON.parse(rawText)
-            message = json.detail ?? JSON.stringify(json)
+            return new Error(json.detail || JSON.stringify(json))
         } catch {
-            if (rawText) message = rawText
+            return new Error(rawText || `HTTP ${response.status}`)
         }
-
-        return new Error(message)
     }
 }
 
