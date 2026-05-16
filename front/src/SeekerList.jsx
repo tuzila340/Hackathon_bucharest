@@ -11,26 +11,7 @@ import styles from "./Table.module.css"
 function SeekerList() {
     const [seekers, setSeekers] = useState([])
 
-    const fetchSeekers = async () => {
-        try {
-            const response = await axios.get("http://127.0.0.1:8000/api/requests/", {
-                withCredentials: true,
-            })
-            console.log("Profile data:", response.data)
-            setSeekers(response.data)
-        } catch (err) {
-            if (err.response?.status === 401) {
-                setSeekers([])
-            } else {
-                console.error("Error fetching profile:", err.message)
-            }
-        }
-    }
-
     useEffect(() => {
-        tokenStore.setAccess("70c6ff85fe002ad327686df69cebe647a940525e")
-        console.log(tokenStore.getAccess())
-
         const getSeekerList = async () => {
             const response = await seekerListService.get()
             console.log(response)
