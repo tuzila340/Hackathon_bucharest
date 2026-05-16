@@ -20,17 +20,9 @@ const schema = yup.object().shape({
   firstname: yup.string().required("Firstname is required"),
   secondname: yup.string().required("Secondname is required"),
   password: yup.string().required("Password is required"),
-  role: yup
-    .string()
-    .oneOf(["volunteer", "seeker"], "Role must be 'volunteer' or 'seeker'"),
   phone: yup.string().matches(/^\d{10}$/, "Phone number must be 10 digits"),
   city: yup.string(),
 });
-
-const roles = [
-  { value: "volunteer", label: "Volunteer" },
-  { value: "seeker", label: "Seeker" },
-];
 
 function LogInDialog({ onLogin }) {
   const [isLogin, setIsLogin] = useState(false);
@@ -129,32 +121,6 @@ function LogInDialog({ onLogin }) {
             )}
           </div>
 
-          <div>
-            <Label htmlFor="role">Role</Label>
-            <select
-              id="role"
-              {...register("role")}
-              className="w-full border rounded px-3 py-2"
-            >
-              <option value="">Select a role</option>
-              {roles.map((role) => (
-                <option key={role.value} value={role.value}>
-                  {role.label}
-                </option>
-              ))}
-            </select>
-            {errors.role && (
-              <b style={{ color: "red" }}>{errors.role.message}</b>
-            )}
-          </div>
-
-          <div>
-            <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" placeholder="Phone" {...register("phone")} />
-            {errors.phone && (
-              <b style={{ color: "red" }}>{errors.phone.message}</b>
-            )}
-          </div>
 
           <div>
             <Label htmlFor="city">City</Label>
