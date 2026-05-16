@@ -69,6 +69,7 @@ function AddSeekerDialog({ onAddSeeker }) {
     }
   };
 
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       {!isAdding && (
