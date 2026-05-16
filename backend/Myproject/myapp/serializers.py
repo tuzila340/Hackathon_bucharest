@@ -13,27 +13,32 @@ class UserProfileSerializer(serializers.ModelSerializer):
         model = UserProfile
         fields = ('__all__')
 
+
 class RegisterSerializer(serializers.ModelSerializer):
     role = serializers.CharField(write_only=True)
-    name = serializers.CharField(write_only=True)
-    surname = serializers.CharField(write_only=True)
+    # 1. Оголошуємо поля
+    firstname = serializers.CharField(write_only=True, source='name')
+    secondname = serializers.CharField(write_only=True, source='surname')
 
     class Meta:
         model = User
-        fields = ('username', 'password', 'email', 'role', 'name', 'surname')
+        # 2. ОБОВ'ЯЗКОВО додаємо їх сюди
+        fields = ('username', 'password', 'email', 'role', 'firstname', 'secondname')
         extra_kwargs = {'password': {'write_only': True}}
 
     def create(self, validated_data):
-
         user = User.objects.create_user(
             username=validated_data['username'],
-            email=validated_data['email'],
-            password=validated_data['password']
+            password=validated_data['password'],
+            email=validated_data.get('email', '')
         )
-        profile = user.userprofile
-        profile.role = validated_data.get('role')
-        profile.name = validated_data.get('name')
-        profile.surname = validated_data.get('surname')
+        # Створюємо профіль, якщо він не створився автоматично сигналом
+        profile, created = UserProfile.objects.get_or_create(user=user)
+
+        profile.role = validated_data.get('role', 'seeker').lower()
+        # Тут Django вже сам підставить значення з Firstname в 'name' завдяки параметру source
+        profile.name = validated_data.get('name', '')
+        profile.surname = validated_data.get('surname', '')
         profile.save()
         return user
 
