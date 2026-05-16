@@ -68,11 +68,11 @@ function RegistrationDialog({ onRegister }) {
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
-      {!isRegistered && <DialogTrigger asChild>Registeration</DialogTrigger>}
+      {!isRegistered && <DialogTrigger asChild>Registration</DialogTrigger>}
 
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Registeration</DialogTitle>
+          <DialogTitle>Registration</DialogTitle>
         </DialogHeader>
 
         <div className="flex flex-col gap-3">
