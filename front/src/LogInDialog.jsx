@@ -30,11 +30,11 @@ function LogInDialog({ onLogin }) {
 
   const LogIn = async (data) => {
     try {
-      await axios.post("http://localhost:5158/register", data);
+      await axios.post("/register", data);
       console.log("Registered!");
 
       await axios.post(
-        "http://localhost:5158/login",
+        "/login",
         {
           username: data.username,
           password: data.password,
