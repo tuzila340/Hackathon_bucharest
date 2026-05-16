@@ -64,7 +64,7 @@ function AddSeekerDialog({ onAddSeeker }) {
     <Dialog open={open} onOpenChange={setOpen}>
       {!isAdding && (
         <DialogTrigger asChild>
-          <Button>Add Seeker</Button>
+          Add Seeker
         </DialogTrigger>
       )}
 

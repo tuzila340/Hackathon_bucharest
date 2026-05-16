@@ -36,7 +36,7 @@ function Navbar({ onNavigate }) {
 
               {user ? (
                 <>
-                  <span className="btn">👤 {user.username}</span>
+                  <span className="btn"> {user.username}</span>
                   <AddSeekerDialog />
                   <button
                     className="btn"
