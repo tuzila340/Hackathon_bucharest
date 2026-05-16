@@ -17,18 +17,18 @@ import { useState } from "react";
 import axios from "axios";
 
 const schema = yup.object().shape({
-  seeker_firstname: yup.string().required("Firstname is required"),
-  seeker_secondname: yup.string().required("Secondname is required"),
-  seeker_phone: yup
+  title: yup.string().required("Title is required"),
+  description: yup.string().required("Description is required"),
+  contact_phone: yup
     .string()
     .matches(/^\d{10}$/, "Phone number must be 10 digits"),
-  seeker_city: yup.string(),
-  seeker_status: yup
+  location: yup.string(),
+  urgency: yup
     .string()
-    .oneOf(["ok", "no data"], "Status must be 'active' or 'inactive'"),
+    .oneOf(["ok", "no data"], "Status must be 'ok' or 'no data'"),
 });
 
-const statuses = [
+const urgencyOptions = [
   { value: "ok", label: "OK" },
   { value: "no data", label: "No data" },
 ];
@@ -36,21 +36,6 @@ const statuses = [
 function AddSeekerDialog({ onAddSeeker }) {
   const [open, setOpen] = useState(false);
   const [isAdding, setIsAdding] = useState(false);
-
-  const AddSeeker = async (data) => {
-    try {
-      await axios.post("http://127.0.0.1:8000/api/requests/", data);
-      console.log("Seeker added!");
-      setIsAdding(true);
-
-      reset();
-      if (onAddSeeker) onAddSeeker();
-      window.location.reload();
-    } catch (err) {
-      console.error("Error details:", JSON.stringify(err.response?.data));
-      setIsAdding(false);
-    }
-  };
 
   const {
     register,
@@ -61,12 +46,29 @@ function AddSeekerDialog({ onAddSeeker }) {
     resolver: yupResolver(schema),
   });
 
-  return (
-    <>
-      <Dialog open={open} onOpenChange={setOpen}>
-        {!isAdding && <DialogTrigger asChild>Add Seeker</DialogTrigger>}
+  const AddSeeker = async (data) => {
+    try {
+      await axios.post("http://127.0.0.1:8000/api/requests/", data);
+      console.log("Seeker added!");
+      setIsAdding(true);
+      reset();
+      if (onAddSeeker) onAddSeeker();
+      setOpen(false);
+    } catch (err) {
+      console.error("Error details:", JSON.stringify(err.response?.data));
+      setIsAdding(false);
+    }
+  };
 
-        <DialogContent>
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      {!isAdding && (
+        <DialogTrigger asChild>
+          <Button>Add Seeker</Button>
+        </DialogTrigger>
+      )}
+
+      <DialogContent>
         <DialogHeader>
           <DialogTitle>Add Seeker</DialogTitle>
           <DialogDescription>
@@ -76,61 +78,77 @@ function AddSeekerDialog({ onAddSeeker }) {
 
         <div className="flex flex-col gap-3">
           <div>
-            <Label htmlFor="firstname">Firstname</Label>
-            <Input
-              id="firstname"
-              placeholder="Firstname"
-              {...register("seeker_firstname")}
-            />
-            {errors.seeker_firstname && <b style={{ color: "red" }}>{errors.seeker_firstname.message}</b>}
+            <Label htmlFor="title">Title</Label>
+            <Input id="title" placeholder="Title" {...register("title")} />
+            {errors.title && (
+              <b style={{ color: "red" }}>{errors.title.message}</b>
+            )}
           </div>
 
           <div>
-            <Label htmlFor="secondname">Secondname</Label>
+            <Label htmlFor="description">Description</Label>
             <Input
-              id="secondname"
-              placeholder="Secondname"
-              {...register("seeker_secondname")} ы
+              id="description"
+              placeholder="Description"
+              {...register("description")}
             />
-            {errors.seeker_secondname && <b style={{ color: "red" }}>{errors.seeker_secondname.message}</b>}
+            {errors.description && (
+              <b style={{ color: "red" }}>{errors.description.message}</b>
+            )}
           </div>
 
           <div>
-            <Label htmlFor="role">Status</Label>
+            <Label htmlFor="contact_phone">Phone</Label>
+            <Input
+              id="contact_phone"
+              placeholder="Phone"
+              {...register("contact_phone")}
+            />
+            {errors.contact_phone && (
+              <b style={{ color: "red" }}>{errors.contact_phone.message}</b>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="location">Location</Label>
+            <Input
+              id="location"
+              placeholder="Location"
+              {...register("location")}
+            />
+            {errors.location && (
+              <b style={{ color: "red" }}>{errors.location.message}</b>
+            )}
+          </div>
+
+          <div>
+            <Label htmlFor="urgency">Urgency</Label>
             <select
-              id="role"
-              {...register("seeker_status")}
+              id="urgency"
+              {...register("urgency")}
               className="w-full border rounded px-3 py-2"
             >
-              <option value="">Select a status</option>
-              {statuses.map((role) => (
-                <option key={role.value} value={role.value}>
-                  {role.label}
+              <option value="">Select urgency</option>
+              {urgencyOptions.map((option) => (
+                <option key={option.value} value={option.value}>
+                  {option.label}
                 </option>
               ))}
             </select>
-            {errors.seeker_status && <b style={{ color: "red" }}>{errors.seeker_status.message}</b>}
-          </div>
-
-          <div>
-            <Label htmlFor="phone">Phone</Label>
-            <Input id="phone" placeholder="Phone" {...register("seeker_phone")} />
-            {errors.seeker_phone && <b style={{ color: "red" }}>{errors.seeker_phone.message}</b>}
-          </div>
-
-          <div>
-            <Label htmlFor="city">City</Label>
-            <Input id="city" placeholder="City" {...register("seeker_city")} />
-            {errors.seeker_city && <b style={{ color: "red" }}>{errors.seeker_city.message}</b>}
+            {errors.urgency && (
+              <b style={{ color: "red" }}>{errors.urgency.message}</b>
+            )}
           </div>
         </div>
 
         <DialogFooter>
+          <Button variant="outline" onClick={() => setOpen(false)}>
+            Cancel
+          </Button>
           <Button onClick={handleSubmit(AddSeeker)}>Submit</Button>
         </DialogFooter>
       </DialogContent>
-      </Dialog>
-    </>
+    </Dialog>
   );
 }
 
