@@ -10,7 +10,7 @@ function Navbar({ onNavigate }) {
 
   const fetchUser = async () => {
     try {
-      const res = await axios.get("http://localhost:5158/profile", {
+      const res = await axios.get("http://127.0.0.1:8000/api/login/", {
         withCredentials: true,
       });
       setUser(res.data);

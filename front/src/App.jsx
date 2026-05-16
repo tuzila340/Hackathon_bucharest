@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Navbar from './Navbar'
-import SeekerList from './SeekerList'
+import SeekerList from '@/SeekerList'
 
 function App() {
   const [activePage, setActivePage] = useState('home')
