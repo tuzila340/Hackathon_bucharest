@@ -50,12 +50,19 @@ function AddSeekerDialog({ onAddSeeker }) {
 
   const AddSeeker = async (data) => {
     try {
-      await axios.post("http://127.0.0.1:8000/api/requests/", data);
+      const token = localStorage.getItem('token'); 
+
+      await axios.post("http://127.0.0.1:8000/api/requests/", data, {
+        headers: {
+          'Authorization': `Token ${token}`
+        }
+      });
+
       console.log("Seeker added!");
       setIsAdding(true);
-      reset();
       if (onAddSeeker) onAddSeeker();
       setOpen(false);
+      window.location.reload();
     } catch (err) {
       console.error("Error details:", JSON.stringify(err.response?.data));
       setIsAdding(false);
