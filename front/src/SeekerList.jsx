@@ -15,7 +15,7 @@ function SeekerList() {
     useEffect(() => {
         const getSeekerList = async () => {
           await axios.get("http://127.0.0.1:8000/api/requests/", {
-            headers: { 'Authorization': `Token ${token}` }
+            headers: { 'Authorization': `Token ${token}`, }
           })
             console.log(response)
         }
