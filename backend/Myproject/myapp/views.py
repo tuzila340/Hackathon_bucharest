@@ -1,4 +1,4 @@
-from django.shortcuts import render
+
 from rest_framework import generics, permissions, status
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -8,7 +8,7 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-
+from rest_framework.authentication import TokenAuthentication
 from .models import HelpRequest, FavoriteRequest
 from .serializers import HelpRequestSerializer, RegisterSerializer, UserProfileSerializer
 from .forms import HelpRequestForm
@@ -17,6 +17,7 @@ from .forms import HelpRequestForm
 class HelpRequestListAPI(generics.ListCreateAPIView):
     queryset = HelpRequest.objects.filter(status='open').order_by('-created_at')
     serializer_class = HelpRequestSerializer
+    authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
