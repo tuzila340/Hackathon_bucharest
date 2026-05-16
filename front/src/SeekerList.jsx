@@ -14,7 +14,7 @@ function SeekerList() {
 
     const fetchSeekers = async () => {
         try {
-            const response = await axios.get("/api/requests/", {
+            const response = await axios.get("http://127.0.0.1:8000/api/requests/", {
                 withCredentials: true,
             })
             console.log("Profile data:", response.data)

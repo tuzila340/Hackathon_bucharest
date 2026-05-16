@@ -39,7 +39,7 @@ function AddSeekerDialog({ onAddSeeker }) {
 
   const AddSeeker = async (data) => {
     try {
-      await axios.post("/api/requests/", data);
+      await axios.post("http://127.0.0.1:8000/api/requests/", data);
       console.log("Seeker added!");
       setIsAdding(true);
 

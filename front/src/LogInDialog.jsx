@@ -30,11 +30,8 @@ function LogInDialog({ onLogin }) {
 
   const LogIn = async (data) => {
     try {
-      await axios.post("/register", data);
-      console.log("Registered!");
-
       await axios.post(
-        "/login",
+        "http://127.0.0.1:8000/api/login/",
         {
           username: data.username,
           password: data.password,
