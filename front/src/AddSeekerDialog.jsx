@@ -54,7 +54,7 @@ function AddSeekerDialog({ onAddSeeker }) {
 
       await axios.post("http://127.0.0.1:8000/api/requests/", data, {
         headers: {
-          'Authorization': `Token ${token}`
+          'Authorization': "Token ${token}"
         }
       });
 
@@ -73,7 +73,7 @@ function AddSeekerDialog({ onAddSeeker }) {
     <Dialog open={open} onOpenChange={setOpen}>
       {!isAdding && (
         <DialogTrigger asChild>
-          Add Seeker
+          <Button>Add Seeker</Button>
         </DialogTrigger>
       )}
 
