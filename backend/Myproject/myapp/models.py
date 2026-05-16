@@ -19,26 +19,18 @@ class HelpRequest(models.Model):
         ('high', 'Висока'),
         ('critical', 'Критична')
     ]
-
     title = models.CharField(max_length=200, verbose_name='Заголовок')
     description = models.TextField(verbose_name='Опис ситуації')
     location = models.CharField(max_length=300, blank=True, null=True, verbose_name='Місцезнаходження')
     urgency = models.CharField(max_length=20, choices=URGENCY_CHOICES, default='medium', verbose_name='Терміновість')
     contact_phone = models.CharField(max_length=20, blank=True, null=True, verbose_name='Контактний телефон')
-
-
     image = models.ImageField(upload_to='help_requests/', blank=True, null=True, verbose_name='Фото')
-
-    seeker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests_made',
-                               verbose_name='Автор запиту')
-    volunteer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='requests_taken',
-                                  verbose_name='Волонтер')
+    seeker = models.ForeignKey(User, on_delete=models.CASCADE, related_name='requests_made',verbose_name='Автор запиту')
+    volunteer = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, blank=True, related_name='requests_taken',verbose_name='Волонтер')
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='open', verbose_name='Статус')
-
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Дата створення')
     updated_at = models.DateTimeField(auto_now=True, verbose_name='Дата оновлення')
     accepted_at = models.DateTimeField(null=True, blank=True, verbose_name='Дата прийняття волонтером')
-
     class Meta:
         ordering = ['-created_at']
         verbose_name = 'Запит на допомогу'

@@ -8,20 +8,28 @@ from django.contrib import messages
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from rest_framework.authentication import TokenAuthentication
+
 from .models import HelpRequest, FavoriteRequest
 from .serializers import HelpRequestSerializer, RegisterSerializer, UserProfileSerializer
 from .forms import HelpRequestForm
+from rest_framework.decorators import api_view
+from rest_framework.authentication import TokenAuthentication
+from rest_framework import generics, permissions
+from django.utils.decorators import method_decorator
+from django.views.decorators.csrf import csrf_exempt
 
-#Cписок тільки відкритих запитів на головну, щоб не забити її завершеними
+
+@method_decorator(csrf_exempt, name='dispatch')
 class HelpRequestListAPI(generics.ListCreateAPIView):
     queryset = HelpRequest.objects.filter(status='open').order_by('-created_at')
     serializer_class = HelpRequestSerializer
     authentication_classes = [TokenAuthentication]
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
-
     def perform_create(self, serializer):
-        serializer.save(seeker=self.request.user)
+        if self.request.user.is_authenticated:
+            serializer.save(seeker=self.request.user)
+        else:
+            serializer.save()
 
 # Клас для перегляду деталей, редагування або видалення конкретної допомоги
 class HelpRequestDetailAPI(generics.RetrieveUpdateDestroyAPIView):
